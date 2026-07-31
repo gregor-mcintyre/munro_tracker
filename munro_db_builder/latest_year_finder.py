@@ -11,7 +11,7 @@ def find_latest_year_column(column_names: Iterable[str]) -> str:
 
     DoBIH classifies Munros and Tops in a single column per survey-year.
     Automatically finding the column of the latest survey-year allows
-    for new years added to future files to be handled appropriately,
+    for future releases of the CSV file to be handled appropriately,
     assuming the format of the file does not change.
 
     Args:
