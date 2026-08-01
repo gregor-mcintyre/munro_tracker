@@ -19,18 +19,27 @@ class TestNormalizeHeightFt:
 
 
 @patch(MUNRO_DB_BUILDER_PACKAGE_PATH + ".csv_normalizers._normalize_height_ft")
-def test_normalize_column_names_calls_normalize_height_ft_for_each_column(
-    mock_normalize_height_ft,
-):
-    mock_normalize_height_ft.side_effect = ["normalized_1", "normalized_2"]
+class TestNormalizeColumnNames:
+    def test_normalize_height_ft_called_for_every_column(
+        self,
+        mock_normalize_height_ft,
+    ):
+        normalize_column_names(["column_1", "column_2"])
 
-    result = normalize_column_names(["column_1", "column_2"])
+        assert mock_normalize_height_ft.call_count == 2
+        mock_normalize_height_ft.assert_has_calls(
+            [call("column_1"), call("column_2")]
+        )
 
-    mock_normalize_height_ft.assert_has_calls(
-        [call("column_1"), call("column_2")]
-    )
+    def test_returns_every_column_name_normalized(
+        self,
+        mock_normalize_height_ft,
+    ):
+        mock_normalize_height_ft.side_effect = ["normalized_1", "normalized_2"]
 
-    assert result == ["normalized_1", "normalized_2"]
+        result = normalize_column_names(["column_1", "column_2"])
+
+        assert result == ["normalized_1", "normalized_2"]
 
 
 class TestNormalizeInt:
