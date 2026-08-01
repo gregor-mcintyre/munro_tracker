@@ -4,8 +4,8 @@ Normalizes values and maps rows to this project's internal schema,
 which is consistent with the SQLite database.
 """
 
-from munro_db_builder.csv_normalizers import normalize_int
-from munro_db_builder.csv_row_type import CSVRow
+from munro_db_builder.csv.normalizers import normalize_int
+from munro_db_builder.csv.row_type import CSVRow
 
 type _NormalizedValue = str | int | None
 type _MappedRow = dict[str, _NormalizedValue]

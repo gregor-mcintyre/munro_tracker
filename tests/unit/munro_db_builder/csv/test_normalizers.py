@@ -1,6 +1,6 @@
 from unittest.mock import call, patch
 
-from munro_db_builder.csv_normalizers import (
+from munro_db_builder.csv.normalizers import (
     _normalize_height_ft,
     normalize_column_names,
     normalize_int,
@@ -18,7 +18,7 @@ class TestNormalizeHeightFt:
         assert _normalize_height_ft(column_name) is column_name
 
 
-@patch(MUNRO_DB_BUILDER_PACKAGE_PATH + ".csv_normalizers._normalize_height_ft")
+@patch(MUNRO_DB_BUILDER_PACKAGE_PATH + ".csv.normalizers._normalize_height_ft")
 class TestNormalizeColumnNames:
     def test_normalize_height_ft_called_for_every_column(
         self,

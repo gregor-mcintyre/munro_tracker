@@ -3,9 +3,7 @@ from unittest.mock import patch
 
 import pytest
 
-from munro_db_builder.munros_and_tops_loader import (
-    load_munros_and_tops_from_dobih_csv,
-)
+from munro_db_builder.csv.loader import load_munros_and_tops_from_dobih_csv
 from tests.helpers import MUNRO_DB_BUILDER_PACKAGE_PATH
 
 
@@ -40,8 +38,7 @@ class TestLoadMunrosAndTopsFromDoBIHCSV:
             load_munros_and_tops_from_dobih_csv(tmp_path / "does_not_exist")
 
     @patch(
-        MUNRO_DB_BUILDER_PACKAGE_PATH
-        + ".munros_and_tops_loader.normalize_column_names"
+        MUNRO_DB_BUILDER_PACKAGE_PATH + ".csv.loader.normalize_column_names"
     )
     def test_normalize_column_names_is_called_with_correct_column_names(
         self,

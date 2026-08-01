@@ -3,7 +3,7 @@
 import csv
 from pathlib import Path
 
-from munro_db_builder.csv_normalizers import normalize_column_names
+from munro_db_builder.csv.normalizers import normalize_column_names
 import paths
 
 
