@@ -7,7 +7,7 @@ from munro_db_builder.mapper import (
 )
 from tests.helpers import MUNRO_DB_BUILDER_PACKAGE_PATH
 
-_MAPPER_MODULE_PATH = MUNRO_DB_BUILDER_PACKAGE_PATH + ".mapper"
+_MODULE_PATH = MUNRO_DB_BUILDER_PACKAGE_PATH + ".mapper"
 
 
 class TestNormalizeFieldValue:
@@ -21,7 +21,7 @@ class TestNormalizeFieldValue:
 
         assert result is self._RAW_VALUE
 
-    @patch(target=_MAPPER_MODULE_PATH + ".normalize_int")
+    @patch(_MODULE_PATH + ".normalize_int")
     def test_other_field_returns_normalize_int_result(
         self,
         mock_normalize_int,
@@ -36,7 +36,7 @@ class TestNormalizeFieldValue:
         assert result == mock_normalize_int.return_value
 
 
-@patch(target=_MAPPER_MODULE_PATH + "._normalize_field_value")
+@patch(_MODULE_PATH + "._normalize_field_value")
 class TestMapToInternalSchema:
     _CSV_ROW = {"DoBIH Number": "1", "Name": "2", "Height (ft)": "3"}
 
@@ -46,14 +46,11 @@ class TestMapToInternalSchema:
     ):
         _map_to_internal_schema(self._CSV_ROW)
 
-        assert mock_normalize_field_value.call_count == 3
-        mock_normalize_field_value.assert_has_calls(
-            [
-                call(field_name="id", raw_value="1"),
-                call(field_name="name", raw_value="2"),
-                call(field_name="height_ft", raw_value="3"),
-            ]
-        )
+        assert mock_normalize_field_value.call_args_list == [
+            call(field_name="id", raw_value="1"),
+            call(field_name="name", raw_value="2"),
+            call(field_name="height_ft", raw_value="3"),
+        ]
 
     def test_columns_not_in_internal_schema_are_omitted(self, _):
         csv_row = self._CSV_ROW | {
@@ -76,7 +73,7 @@ class TestMapToInternalSchema:
         assert result == {"id": 1, "name": "2", "height_ft": 3}
 
 
-@patch(target=_MAPPER_MODULE_PATH + "._map_to_internal_schema")
+@patch(_MODULE_PATH + "._map_to_internal_schema")
 class TestMapToInternalSchemaAndAddClassification:
     _CSV_ROW = {"1": "MUN"}
 

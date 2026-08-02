@@ -26,10 +26,10 @@ class TestNormalizeColumnNames:
     ):
         normalize_column_names(["column_1", "column_2"])
 
-        assert mock_normalize_height_ft.call_count == 2
-        mock_normalize_height_ft.assert_has_calls(
-            [call("column_1"), call("column_2")]
-        )
+        assert mock_normalize_height_ft.call_args_list == [
+            call("column_1"),
+            call("column_2"),
+        ]
 
     def test_returns_every_column_name_normalized(
         self,

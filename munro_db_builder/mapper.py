@@ -8,7 +8,7 @@ from munro_db_builder.csv.normalizers import normalize_int
 from munro_db_builder.csv.row_type import CSVRow
 
 type _NormalizedValue = str | int | None
-type _MappedRow = dict[str, _NormalizedValue]
+type MappedRow = dict[str, _NormalizedValue]
 
 # Mapping of normalized CSV column names to internal schema.
 # ADJUST KEYS if a future release of the CSV file renames them
@@ -42,7 +42,7 @@ def _normalize_field_value(
     return normalize_int(raw_value)
 
 
-def _map_to_internal_schema(csv_row: CSVRow) -> _MappedRow:
+def _map_to_internal_schema(csv_row: CSVRow) -> MappedRow:
     """Maps the columns of a CSV row to the internal schema.
 
     Columns not included in the internal schema are omitted.
@@ -67,8 +67,9 @@ def _map_to_internal_schema(csv_row: CSVRow) -> _MappedRow:
 
 def map_to_internal_schema_and_add_classification(
     csv_row: CSVRow,
+    *,
     latest_year_column: str,
-) -> _MappedRow:
+) -> MappedRow:
     """Maps a CSV row and adds a classification key-value pair.
 
     Passes `csv_row` through `_map_to_internal_schema` and adds a

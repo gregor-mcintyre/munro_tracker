@@ -8,6 +8,7 @@ import paths
 
 
 def load_munros_and_tops_from_dobih_csv(
+    *,
     path: Path = paths.DOBIH_MUNROS_CSV_FILE,
 ) -> list[dict[str, str]]:
     """Loads Munros and Tops from a CSV file.
