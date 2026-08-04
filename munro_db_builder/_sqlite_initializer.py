@@ -9,7 +9,7 @@ from contextlib import closing
 from pathlib import Path
 import sqlite3
 
-from munro_db_builder.mapper import MappedRow
+from munro_db_builder._mapper import MappedRow
 import paths
 
 

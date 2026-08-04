@@ -6,8 +6,8 @@ from unittest.mock import patch
 
 import pytest
 
-from munro_db_builder.mapper import MappedRow
-from munro_db_builder.sqlite_initializer import (
+from munro_db_builder._mapper import MappedRow
+from munro_db_builder._sqlite_initializer import (
     _create_table,
     _delete_existing,
     _populate,
@@ -15,7 +15,7 @@ from munro_db_builder.sqlite_initializer import (
 )
 from tests.helpers import MUNRO_DB_BUILDER_PACKAGE_PATH
 
-_MODULE_PATH = MUNRO_DB_BUILDER_PACKAGE_PATH + ".sqlite_initializer"
+_MODULE_PATH = MUNRO_DB_BUILDER_PACKAGE_PATH + "._sqlite_initializer"
 
 type _FixtureScope = Literal[
     "session",

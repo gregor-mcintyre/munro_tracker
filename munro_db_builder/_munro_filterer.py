@@ -6,11 +6,11 @@ classification from the latest survey-year.
 
 from collections.abc import Iterable, Iterator
 
-from munro_db_builder.csv.row_type import CSVRow
-from munro_db_builder.mapper import (
+from munro_db_builder._mapper import (
     MappedRow,
     map_to_internal_schema_and_add_classification,
 )
+from munro_db_builder.csv.row_type import CSVRow
 
 
 def _is_munro(mapped_row: MappedRow) -> bool:

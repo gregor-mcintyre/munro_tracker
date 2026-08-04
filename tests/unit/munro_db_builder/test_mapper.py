@@ -1,13 +1,13 @@
 from unittest.mock import call, patch
 
-from munro_db_builder.mapper import (
+from munro_db_builder._mapper import (
     _map_to_internal_schema,
     _normalize_field_value,
     map_to_internal_schema_and_add_classification,
 )
 from tests.helpers import MUNRO_DB_BUILDER_PACKAGE_PATH
 
-_MODULE_PATH = MUNRO_DB_BUILDER_PACKAGE_PATH + ".mapper"
+_MODULE_PATH = MUNRO_DB_BUILDER_PACKAGE_PATH + "._mapper"
 
 
 class TestNormalizeFieldValue:

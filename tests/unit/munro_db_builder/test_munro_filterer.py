@@ -1,13 +1,13 @@
 from unittest.mock import call, patch
 
-from munro_db_builder.munro_filterer import (
+from munro_db_builder._munro_filterer import (
     _filter_to_munros,
     _is_munro,
     map_and_filter_to_munros,
 )
 from tests.helpers import MUNRO_DB_BUILDER_PACKAGE_PATH
 
-_MODULE_PATH = MUNRO_DB_BUILDER_PACKAGE_PATH + ".munro_filterer"
+_MODULE_PATH = MUNRO_DB_BUILDER_PACKAGE_PATH + "._munro_filterer"
 
 
 class TestIsMunro:

@@ -1,4 +1,4 @@
-from munro_db_builder.latest_year_finder import find_latest_year_column
+from munro_db_builder._latest_year_finder import find_latest_year_column
 
 
 class TestFindLatestYearColumn:
