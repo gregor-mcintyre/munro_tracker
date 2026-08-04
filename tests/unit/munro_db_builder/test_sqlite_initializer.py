@@ -268,7 +268,7 @@ class TestInitialize:
         mock_create_table.assert_called_once_with(_connection)
         mock_populate.assert_called_once_with(_connection, _mapped_rows)
 
-    def test_returns_number_of_rows_written(
+    def test_returns_number_of_rows_written_from_populate(
         self,
         mock_delete_existing,
         mock_sqlite3_connect,

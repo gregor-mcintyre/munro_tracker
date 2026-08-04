@@ -72,11 +72,11 @@ def initialize(
 
     Executes the following steps:
 
-    1. Deletes any existing file at `db_path`.
-    2. Opens a connection to `db_path`, creating the database file.
-    3. Creates the `munro` table.
-    4. Inserts Munros filtered from the CSV file, in a single transaction.
-    5. Commits the transaction and closes the connection.
+        1. Deletes any existing file at `db_path`.
+        2. Opens a connection to `db_path`, creating the database file.
+        3. Creates the `munro` table.
+        4. Inserts Munros filtered from the CSV file, in a single transaction.
+        5. Commits the transaction and closes the connection.
 
     Args:
         mapped_rows: Rows mapped to the internal schema.
