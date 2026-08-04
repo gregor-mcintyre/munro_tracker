@@ -1,7 +1,7 @@
-"""Builds the SQLite database.
+"""Initializes the SQLite database for Munros.
 
-Populates the database with Munros filtered from the DoBIH Munros and
-Tops CSV file.
+Deletes any existing database, creates a new one, and populates it with
+Munros filtered from the DoBIH Munros and Tops CSV file.
 """
 
 from collections.abc import Iterable
@@ -41,7 +41,7 @@ def _create_table(connection: sqlite3.Connection) -> None:
 def _populate(
     connection: sqlite3.Connection,
     mapped_rows: Iterable[MappedRow],
-) -> None:
+) -> int:
     """Populates the `munro` table with Munros filtered from the CSV file.
 
     All rows are inserted in bulk as a single transaction.
@@ -49,8 +49,11 @@ def _populate(
     Args:
         connection: An open SQLite connection to insert the rows on.
         mapped_rows: Rows mapped to the internal schema.
+
+    Returns:
+        The number of rows written to the database.
     """
-    connection.executemany(
+    cursor = connection.executemany(
         """
         INSERT INTO munro (id, name, height_ft)
         VALUES (?, ?, ?)
@@ -58,24 +61,29 @@ def _populate(
         ((row["id"], row["name"], row["height_ft"]) for row in mapped_rows),
     )
 
+    return cursor.rowcount
 
-def build(
+
+def initialize(
     mapped_rows: Iterable[MappedRow],
     path: Path = paths.MUNRO_SQLITE_DB,
-) -> None:
-    """Builds a new SQLite database file for Munros.
+) -> int:
+    """Initializes a new SQLite database file for Munros.
 
     Executes the following steps:
 
     1. Deletes any existing file at `db_path`.
     2. Opens a connection to `db_path`, creating the database file.
     3. Creates the `munro` table.
-    4. Inserts Munros filtered from the CSV file, as a single transaction.
+    4. Inserts Munros filtered from the CSV file, in a single transaction.
     5. Commits the transaction and closes the connection.
 
     Args:
         mapped_rows: Rows mapped to the internal schema.
-        path: The path to where the SQLite database file should be built.
+        path: The path to where the SQLite database file should be initialized.
+
+    Returns:
+        The number of rows written to the database.
     """
     _delete_existing(path)
 
@@ -84,4 +92,5 @@ def build(
         connection,
     ):
         _create_table(connection)
-        _populate(connection, mapped_rows)
+
+        return _populate(connection, mapped_rows)

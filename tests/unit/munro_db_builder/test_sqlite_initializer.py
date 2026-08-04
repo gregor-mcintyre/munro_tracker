@@ -6,15 +6,24 @@ from unittest.mock import patch
 
 import pytest
 
-from munro_db_builder.builder import (
+from munro_db_builder.mapper import MappedRow
+from munro_db_builder.sqlite_initializer import (
     _create_table,
     _delete_existing,
     _populate,
-    build,
+    initialize,
 )
 from tests.helpers import MUNRO_DB_BUILDER_PACKAGE_PATH
 
-_MODULE_PATH = MUNRO_DB_BUILDER_PACKAGE_PATH + ".builder"
+_MODULE_PATH = MUNRO_DB_BUILDER_PACKAGE_PATH + ".sqlite_initializer"
+
+type _FixtureScope = Literal[
+    "session",
+    "package",
+    "module",
+    "class",
+    "function",
+]
 
 
 @pytest.fixture
@@ -28,15 +37,6 @@ def _path_to_temporary_sqlite_db_file(tmp_path) -> Path:
         The path to the temporary SQLite database file.
     """
     return tmp_path / "test.db"
-
-
-type _FixtureScope = Literal[
-    "session",
-    "package",
-    "module",
-    "class",
-    "function",
-]
 
 
 def _create_connection_fixture(
@@ -70,6 +70,15 @@ def _create_connection_fixture(
             connection.close()
 
     return _connection
+
+
+@pytest.fixture
+def _mapped_rows() -> list[MappedRow]:
+    """Sample rows mapped to the internal schema."""
+    return [
+        {"id": 1, "name": "Munro 1", "height_ft": 3},
+        {"id": 2, "name": "Munro 2", "height_ft": 4},
+    ]
 
 
 class TestDeleteExisting:
@@ -189,7 +198,13 @@ class TestCreateTable:
 class TestPopulate:
     _connection = _create_connection_fixture(scope="function")
 
-    def test_inserted_rows_match_mapped_rows(self, _connection):
+    @pytest.fixture
+    def _create_munro_table(self, _connection) -> None:
+        """Creates the `munro` table.
+
+        Args:
+            _connection: An open connection to an in-memory SQLite database.
+        """
         _connection.execute("""
             CREATE TABLE munro (
                 id INTEGER PRIMARY KEY,
@@ -198,27 +213,37 @@ class TestPopulate:
             )
             """)
 
-        mapped_rows = [
-            {"id": 1, "name": "Munro 1", "height_ft": 3},
-            {"id": 2, "name": "Munro 2", "height_ft": 4},
-        ]
-
-        _populate(_connection, mapped_rows)
+    def test_inserted_rows_match_mapped_rows(
+        self,
+        _connection,
+        _create_munro_table,
+        _mapped_rows,
+    ):
+        _populate(_connection, _mapped_rows)
 
         _connection.row_factory = sqlite3.Row
         query_result = _connection.execute("SELECT * FROM munro").fetchall()
         dict_rows = [dict(row) for row in query_result]
 
-        assert dict_rows == mapped_rows
+        assert dict_rows == _mapped_rows
+
+    def test_returns_number_of_rows_written(
+        self,
+        _connection,
+        _create_munro_table,
+        _mapped_rows,
+    ):
+        result = _populate(_connection, _mapped_rows)
+
+        assert result == len(_mapped_rows)
 
 
 @patch(_MODULE_PATH + "._populate")
 @patch(_MODULE_PATH + "._create_table")
 @patch(_MODULE_PATH + ".sqlite3.connect")
 @patch(_MODULE_PATH + "._delete_existing")
-class TestBuild:
+class TestInitialize:
     _connection = _create_connection_fixture()
-    _MAPPED_ROWS = [{"id": 1, "name": "Munro", "height_ft": 2}]
 
     def test_calls_dependencies_with_expected_arguments(
         self,
@@ -227,11 +252,12 @@ class TestBuild:
         mock_create_table,
         mock_populate,
         _connection,
+        _mapped_rows,
         _path_to_temporary_sqlite_db_file,
     ):
         mock_sqlite3_connect.return_value = _connection
 
-        build(self._MAPPED_ROWS, _path_to_temporary_sqlite_db_file)
+        initialize(_mapped_rows, _path_to_temporary_sqlite_db_file)
 
         mock_delete_existing.assert_called_once_with(
             _path_to_temporary_sqlite_db_file,
@@ -240,7 +266,21 @@ class TestBuild:
             _path_to_temporary_sqlite_db_file,
         )
         mock_create_table.assert_called_once_with(_connection)
-        mock_populate.assert_called_once_with(_connection, self._MAPPED_ROWS)
+        mock_populate.assert_called_once_with(_connection, _mapped_rows)
+
+    def test_returns_number_of_rows_written(
+        self,
+        mock_delete_existing,
+        mock_sqlite3_connect,
+        mock_create_table,
+        mock_populate,
+        _connection,
+        _mapped_rows,
+        _path_to_temporary_sqlite_db_file,
+    ):
+        result = initialize(_mapped_rows, _path_to_temporary_sqlite_db_file)
+
+        assert result is mock_populate.return_value
 
     def test_closes_connection_after_use(
         self,
@@ -249,9 +289,10 @@ class TestBuild:
         mock_create_table,
         mock_populate,
         _connection,
+        _mapped_rows,
         _path_to_temporary_sqlite_db_file,
     ):
-        build(self._MAPPED_ROWS, _path_to_temporary_sqlite_db_file)
+        initialize(_mapped_rows, _path_to_temporary_sqlite_db_file)
 
         with pytest.raises(sqlite3.ProgrammingError):
             _connection.execute("SELECT 1")
