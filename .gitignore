@@ -2,3 +2,4 @@
 .vs
 .vscode
 data/munro.db
+*.egg-info/

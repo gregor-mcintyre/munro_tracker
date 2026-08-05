@@ -1,0 +1,74 @@
+[project]
+name = "munro_tracker"
+version = "0.0.0"
+description = "Builds a SQLite database of Munros based on a DoBIH CSV file."
+requires-python = ">=3.14"
+
+[project.optional-dependencies]
+dev = [
+    "ruff==0.15.22",
+    "mypy==1.20.0",
+    "pre-commit==4.0.1",
+    "vulture==2.13",
+]
+
+[build-system]
+requires = ["setuptools>=80", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+namespaces = false
+exclude = [
+    "data*",
+    "tests*",
+]
+
+[tool.ruff]
+line-length = 88
+target-version = "py314"
+
+[tool.ruff.lint]
+select = [
+    "E", # pycodestyle errors
+    "W", # pycodestyle warnings
+    "F", # pyflakes (unused imports/vars, undefined names)
+    "N", # pep8-naming (class/function/var naming conventions)
+    "D", # pydocstyle (docstring presence + Google-style format)
+    "I", # isort (import sorting)
+    "UP", # pyupgrade (modern syntax, e.g. f-strings over .format())
+    "B", # bugbear (common bug patterns, e.g. mutable default args)
+    "SIM", # simplify (flags needless string concat, etc.)
+    "C4", # comprehensions
+    # NOTE: "ANN" (flake8-annotations) intentionally omitted -- mypy's
+    # strict mode already catches missing type hints. Enabling both
+    # just duplicates the same error from two tools.
+]
+ignore = [
+    "D203", # conflicts with D211 (blank line before class docstring)
+    "D213", # conflicts with D212 (multi-line summary position)
+]
+
+# Enforce Google-style docstrings specifically
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+# Import sorting: stdlib -> third-party -> first-party, alphabetized
+[tool.ruff.lint.isort]
+force-sort-within-sections = true
+combine-as-imports = true
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/test_*.py" = ["D100", "D101", "D102", "D103"]
+"**/__init__.py" = ["D104", "F401"]
+
+[tool.ruff.format]
+quote-style = "double"
+
+# mypy — static type checking (enforces type hints)
+[tool.mypy]
+python_version = "3.14"
+warn_return_any = true
+warn_unused_ignores = true
+show_error_codes = true
+check_untyped_defs = true
