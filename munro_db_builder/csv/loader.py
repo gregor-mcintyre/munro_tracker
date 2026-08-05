@@ -13,9 +13,8 @@ def load_munros_and_tops_from_dobih_csv(
 ) -> list[dict[str, str]]:
     """Loads Munros and Tops from a CSV file.
 
-    Opens the file with the `cp1252` encoding since it appears DoBIH
-    have published the file with this encoding (common for Microsoft
-    Excel on Windows).
+    Opens the file with the `cp1252` encoding since it appears DoBIH have published the
+    file with this encoding (common for Microsoft Excel on Windows).
 
     Normalizes column names where necessary.
 
@@ -28,8 +27,6 @@ def load_munros_and_tops_from_dobih_csv(
     with path.open(newline="", encoding="cp1252") as file:
         reader = csv.DictReader(file)
 
-        reader.fieldnames = normalize_column_names(
-            reader.fieldnames  # type: ignore
-        )
+        reader.fieldnames = normalize_column_names(reader.fieldnames)  # type: ignore
 
         return list(reader)

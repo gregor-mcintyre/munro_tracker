@@ -1,7 +1,7 @@
 from collections.abc import Callable, Iterator
 from pathlib import Path
 import sqlite3
-from typing import Literal
+from typing import Literal, cast
 from unittest.mock import patch
 
 import pytest
@@ -17,17 +17,11 @@ from tests.helpers import MUNRO_DB_BUILDER_PACKAGE_PATH
 
 _MODULE_PATH = MUNRO_DB_BUILDER_PACKAGE_PATH + "._sqlite_initializer"
 
-type _FixtureScope = Literal[
-    "session",
-    "package",
-    "module",
-    "class",
-    "function",
-]
+type _FixtureScope = Literal["session", "package", "module", "class", "function"]
 
 
 @pytest.fixture
-def _path_to_temporary_sqlite_db_file(tmp_path) -> Path:
+def _path_to_temporary_sqlite_db_file(tmp_path: Path) -> Path:
     """Returns the path to a temporary SQLite database file.
 
     Args:
@@ -69,7 +63,7 @@ def _create_connection_fixture(
         finally:
             connection.close()
 
-    return _connection
+    return cast(Callable[..., Iterator[sqlite3.Connection]], _connection)
 
 
 @pytest.fixture
@@ -82,10 +76,7 @@ def _mapped_rows() -> list[MappedRow]:
 
 
 class TestDeleteExisting:
-    def test_missing_file_does_not_raise(
-        self,
-        _path_to_temporary_sqlite_db_file,
-    ):
+    def test_missing_file_does_not_raise(self, _path_to_temporary_sqlite_db_file):
         _delete_existing(_path_to_temporary_sqlite_db_file)
 
         assert not _path_to_temporary_sqlite_db_file.exists()
@@ -112,13 +103,12 @@ class TestCreateTable:
             _connection: An open connection to an in-memory SQLite database.
 
         Returns:
-            For each column in the `munro` table within the `munro`
-            database created by `_create_table`:
+            For each column in the `munro` table within the `munro` database created by
+            `_create_table`:
                 - Column name.
                 - Data type.
                 - `True` if there is a NOT NULL constraint, otherwise `False`.
-                - `True` if the column is part of the PRIMARY KEY,
-                  otherwise `False`.
+                - `True` if the column is part of the PRIMARY KEY, otherwise `False`.
         """
         _create_table(_connection)
 
@@ -142,10 +132,7 @@ class TestCreateTable:
 
         assert result == [("munro",)]
 
-    def test_creates_expected_columns(
-        self,
-        _run_create_table_and_get_column_metadata,
-    ):
+    def test_creates_expected_columns(self, _run_create_table_and_get_column_metadata):
         metadata = _run_create_table_and_get_column_metadata
         column_names = [name for name, _, _, _ in metadata]
 
@@ -156,9 +143,7 @@ class TestCreateTable:
         _run_create_table_and_get_column_metadata,
     ):
         metadata = _run_create_table_and_get_column_metadata
-        column_data_types = {
-            name: data_type for name, data_type, _, _ in metadata
-        }
+        column_data_types = {name: data_type for name, data_type, _, _ in metadata}
 
         assert column_data_types == {
             "id": "INTEGER",
@@ -171,15 +156,10 @@ class TestCreateTable:
         _run_create_table_and_get_column_metadata,
     ):
         name_to_pk_map = {
-            name: pk
-            for name, _, _, pk in _run_create_table_and_get_column_metadata
+            name: pk for name, _, _, pk in _run_create_table_and_get_column_metadata
         }
 
-        assert name_to_pk_map == {
-            "id": True,
-            "name": False,
-            "height_ft": False,
-        }
+        assert name_to_pk_map == {"id": True, "name": False, "height_ft": False}
 
     def test_name_and_height_ft_columns_are_not_null(
         self,
@@ -259,12 +239,8 @@ class TestInitialize:
 
         initialize(_mapped_rows, _path_to_temporary_sqlite_db_file)
 
-        mock_delete_existing.assert_called_once_with(
-            _path_to_temporary_sqlite_db_file,
-        )
-        mock_sqlite3_connect.assert_called_once_with(
-            _path_to_temporary_sqlite_db_file,
-        )
+        mock_delete_existing.assert_called_once_with(_path_to_temporary_sqlite_db_file)
+        mock_sqlite3_connect.assert_called_once_with(_path_to_temporary_sqlite_db_file)
         mock_create_table.assert_called_once_with(_connection)
         mock_populate.assert_called_once_with(_connection, _mapped_rows)
 

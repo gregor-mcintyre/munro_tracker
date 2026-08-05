@@ -1,5 +1,6 @@
 from unittest.mock import call, patch
 
+from munro_db_builder._mapper import MappedRow
 from munro_db_builder._munro_filterer import (
     _filter_to_munros,
     _is_munro,
@@ -23,7 +24,7 @@ class TestIsMunro:
 
 @patch(_MODULE_PATH + "._is_munro")
 class TestFilterToMunros:
-    _MAPPED_ROWS = [{"id": 1}, {"id": 2}]
+    _MAPPED_ROWS: list[MappedRow] = [{"id": 1}, {"id": 2}]
 
     def test_no_munros_returns_empty(self, mock_is_munro):
         mock_is_munro.return_value = False
@@ -70,10 +71,7 @@ class TestMapAndFilterToMunros:
 
         mock_map.side_effect = _map_row_side_effect
 
-        result = map_and_filter_to_munros(
-            self._CSV_ROWS,
-            latest_year_column="1",
-        )
+        result = map_and_filter_to_munros(self._CSV_ROWS, latest_year_column="1")
 
         assert list(mock_filter_to_munros.call_args.args[0]) == [
             "mapped_row_1",

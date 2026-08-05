@@ -14,22 +14,13 @@ class TestNormalizeFieldValue:
     _RAW_VALUE = "test"
 
     def test_name_field_returns_raw_value_unchanged(self):
-        result = _normalize_field_value(
-            field_name="name",
-            raw_value=self._RAW_VALUE,
-        )
+        result = _normalize_field_value("name", self._RAW_VALUE)
 
         assert result is self._RAW_VALUE
 
     @patch(_MODULE_PATH + ".normalize_int")
-    def test_other_field_returns_normalize_int_result(
-        self,
-        mock_normalize_int,
-    ):
-        result = _normalize_field_value(
-            field_name="other",
-            raw_value=self._RAW_VALUE,
-        )
+    def test_other_field_returns_normalize_int_result(self, mock_normalize_int):
+        result = _normalize_field_value("other", self._RAW_VALUE)
 
         mock_normalize_int.assert_called_once_with(self._RAW_VALUE)
 
@@ -40,10 +31,7 @@ class TestNormalizeFieldValue:
 class TestMapToInternalSchema:
     _CSV_ROW = {"DoBIH Number": "1", "Name": "2", "Height (ft)": "3"}
 
-    def test_calls_normalize_field_value_per_column(
-        self,
-        mock_normalize_field_value,
-    ):
+    def test_calls_normalize_field_value_per_column(self, mock_normalize_field_value):
         _map_to_internal_schema(self._CSV_ROW)
 
         assert mock_normalize_field_value.call_args_list == [
@@ -53,10 +41,7 @@ class TestMapToInternalSchema:
         ]
 
     def test_columns_not_in_internal_schema_are_omitted(self, _):
-        csv_row = self._CSV_ROW | {
-            "not_include_1": "4",
-            "not_include_2": "5",
-        }
+        csv_row = self._CSV_ROW | {"not_include_1": "4", "not_include_2": "5"}
 
         result = _map_to_internal_schema(csv_row)
 

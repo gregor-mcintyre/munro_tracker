@@ -31,10 +31,7 @@ class TestNormalizeColumnNames:
             call("column_2"),
         ]
 
-    def test_returns_every_column_name_normalized(
-        self,
-        mock_normalize_height_ft,
-    ):
+    def test_returns_every_column_name_normalized(self, mock_normalize_height_ft):
         mock_normalize_height_ft.side_effect = ["normalized_1", "normalized_2"]
 
         result = normalize_column_names(["column_1", "column_2"])

@@ -6,8 +6,8 @@ from collections.abc import Sequence
 def _normalize_height_ft(column_name: str) -> str:
     r"""Normalizes the `Height\n(ft)` column name.
 
-    Normalizes the name of the `Height\n(ft)` column to `Height (ft)`;
-    returns all other column names unchanged.
+    Normalizes the name of the `Height\n(ft)` column to `Height (ft)`; returns all other
+    column names unchanged.
 
     Args:
         column_name: The name of the column to be normalized.
@@ -42,8 +42,8 @@ def normalize_int(value: str) -> int | None:
         value: The column value to be normalized.
 
     Returns:
-        The column value normalized as an `int` if it is numeric,
-        or `None` if it is empty or not numeric.
+        The column value normalized as an `int` if it is numeric, or `None` if it is
+        empty or not numeric.
     """
     try:
         return int(value)

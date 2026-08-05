@@ -1,4 +1,4 @@
-"""Path to the DoBIH Munros and Tops CSV file."""
+"""Paths to files throughout the project."""
 
 from pathlib import Path
 

@@ -3,8 +3,7 @@
 The pipeline for building the database consists of the following steps:
 
     1. Loads Munros and Tops from the CSV file.
-    2. Filters to Munros based on the classification from the latest
-       survey-year column.
+    2. Filters to Munros based on the classification from the latest survey-year column.
     3. Initializes a new SQLite database of Munros.
 """
 

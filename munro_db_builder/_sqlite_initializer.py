@@ -1,7 +1,7 @@
 """Initializes the SQLite database for Munros.
 
-Deletes any existing database, creates a new one, and populates it with
-Munros filtered from the DoBIH Munros and Tops CSV file.
+Deletes any existing database, creates a new one, and populates it with Munros filtered
+from the DoBIH Munros and Tops CSV file.
 """
 
 from collections.abc import Iterable
@@ -38,10 +38,7 @@ def _create_table(connection: sqlite3.Connection) -> None:
         """)
 
 
-def _populate(
-    connection: sqlite3.Connection,
-    mapped_rows: Iterable[MappedRow],
-) -> int:
+def _populate(connection: sqlite3.Connection, mapped_rows: Iterable[MappedRow]) -> int:
     """Populates the `munro` table with Munros filtered from the CSV file.
 
     All rows are inserted in bulk as a single transaction.
@@ -87,10 +84,7 @@ def initialize(
     """
     _delete_existing(path)
 
-    with (
-        closing(sqlite3.connect(path)) as connection,
-        connection,
-    ):
+    with closing(sqlite3.connect(path)) as connection, connection:
         _create_table(connection)
 
         return _populate(connection, mapped_rows)
