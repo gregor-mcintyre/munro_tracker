@@ -7,19 +7,6 @@ from munro_db_builder.csv.loader import load_munros_and_tops_from_dobih_csv
 from tests.helpers import MUNRO_DB_BUILDER_PACKAGE_PATH
 
 
-@pytest.fixture
-def _path_to_temporary_csv_file(tmp_path: Path) -> Path:
-    """Returns the path to a temporary CSV file.
-
-    Args:
-        tmp_path: The path to the temporary directory for a test invocation.
-
-    Returns:
-        The path to the temporary CSV file.
-    """
-    return tmp_path / "test.csv"
-
-
 def _write_to_file_using_cp1252(path: Path, content: str) -> None:
     """Writes content to the file at the provided path.
 
@@ -41,34 +28,34 @@ class TestLoadMunrosAndTopsFromDoBIHCSV:
     def test_normalize_column_names_is_called_with_correct_column_names(
         self,
         mock_normalize_column_names,
-        _path_to_temporary_csv_file,
+        temporary_dobih_csv_file_path,
     ):
         _write_to_file_using_cp1252(
-            _path_to_temporary_csv_file,
+            temporary_dobih_csv_file_path,
             "name,height\nmunro_1,1",
         )
 
-        load_munros_and_tops_from_dobih_csv(path=_path_to_temporary_csv_file)
+        load_munros_and_tops_from_dobih_csv(path=temporary_dobih_csv_file_path)
 
         mock_normalize_column_names.assert_called_once_with(["name", "height"])
 
     def test_special_chars_from_cp1252_encoded_file_are_read_properly(
         self,
-        _path_to_temporary_csv_file,
+        temporary_dobih_csv_file_path,
     ):
-        _write_to_file_using_cp1252(_path_to_temporary_csv_file, "name,height\n’,1")
+        _write_to_file_using_cp1252(temporary_dobih_csv_file_path, "name,height\n’,1")
 
-        result = load_munros_and_tops_from_dobih_csv(path=_path_to_temporary_csv_file)
+        result = load_munros_and_tops_from_dobih_csv(path=temporary_dobih_csv_file_path)
 
         assert result[0]["name"] == "’"
 
-    def test_munros_and_tops_returned(self, _path_to_temporary_csv_file):
+    def test_munros_and_tops_returned(self, temporary_dobih_csv_file_path):
         _write_to_file_using_cp1252(
-            _path_to_temporary_csv_file,
+            temporary_dobih_csv_file_path,
             "name,height\nmunro_1,1\ntop_1,2",
         )
 
-        result = load_munros_and_tops_from_dobih_csv(path=_path_to_temporary_csv_file)
+        result = load_munros_and_tops_from_dobih_csv(path=temporary_dobih_csv_file_path)
 
         expected = [
             {"name": "munro_1", "height": "1"},
