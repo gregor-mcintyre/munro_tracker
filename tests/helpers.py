@@ -1,5 +1,6 @@
 """Helpers shared across the test suite."""
 
+from munro_db_builder._mapper import MappedRow
 from munro_db_builder.csv.row_type import CSVRow
 
 MUNRO_DB_BUILDER_PACKAGE_PATH = "munro_db_builder"
@@ -96,5 +97,52 @@ REALISTIC_DOBIH_CSV_ROWS: list[CSVRow] = [
         "1921": "",
         "2021": "",
         "Comments": "",
+    },
+]
+
+# What `map_to_internal_schema_and_add_classification` is expected to return for each
+# row in `REALISTIC_DOBIH_CSV_ROWS`
+REALISTIC_MAPPED_ROWS: list[MappedRow] = [
+    {
+        "id": 1,
+        "name": "Ben Chonzie",
+        "height_ft": 3054,
+        "classification": "MUN",
+    },
+    {
+        "id": 36,
+        "name": "Beinn a' Chroin East Top",
+        "height_ft": 3084,
+        "classification": "TOP",
+    },
+    {
+        "id": 2925,
+        "name": "Beinn a' Chroin",
+        "height_ft": 3089,
+        "classification": "MUN",
+    },
+    {
+        "id": 1301,
+        "name": "Ben More",
+        "height_ft": 3169,
+        "classification": "MUN",
+    },
+    {
+        "id": 550,
+        "name": "Leabaidh an Daimh Bhuidhe (Ben Avon) - Stuc Gharbh Mhor (old GR)",
+        "height_ft": 3648,
+        "classification": "",
+    },
+    {
+        "id": None,
+        "name": "",
+        "height_ft": None,
+        "classification": "282",
+    },
+    {
+        "id": None,
+        "name": "",
+        "height_ft": None,
+        "classification": "",
     },
 ]
