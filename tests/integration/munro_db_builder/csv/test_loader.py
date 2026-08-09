@@ -1,4 +1,8 @@
-"""Integration tests for loading and normalizing the DoBIH Munros and Tops CSV file."""
+"""Integration tests for `load_munros_and_tops_from_dobih_csv`.
+
+Exercises the `normalize_column_names` and `_normalize_height_ft` collaboration with a
+real CSV file.
+"""
 
 import pytest
 
