@@ -1,5 +1,4 @@
 from collections.abc import Callable, Iterator
-from pathlib import Path
 import sqlite3
 from typing import Literal, cast
 from unittest.mock import patch
@@ -18,19 +17,6 @@ from tests.helpers import MUNRO_DB_BUILDER_PACKAGE_PATH
 _MODULE_PATH = MUNRO_DB_BUILDER_PACKAGE_PATH + "._sqlite_initializer"
 
 type _FixtureScope = Literal["session", "package", "module", "class", "function"]
-
-
-@pytest.fixture
-def _path_to_temporary_sqlite_db_file(tmp_path: Path) -> Path:
-    """Returns the path to a temporary SQLite database file.
-
-    Args:
-        tmp_path: The path to the temporary directory for a test invocation.
-
-    Returns:
-        The path to the temporary SQLite database file.
-    """
-    return tmp_path / "test.db"
 
 
 def _create_connection_fixture(
@@ -76,17 +62,17 @@ def _mapped_rows() -> list[MappedRow]:
 
 
 class TestDeleteExisting:
-    def test_missing_file_does_not_raise(self, _path_to_temporary_sqlite_db_file):
-        _delete_existing(_path_to_temporary_sqlite_db_file)
+    def test_missing_file_does_not_raise(self, temporary_munro_sqlite_db_file_path):
+        _delete_existing(temporary_munro_sqlite_db_file_path)
 
-        assert not _path_to_temporary_sqlite_db_file.exists()
+        assert not temporary_munro_sqlite_db_file_path.exists()
 
-    def test_existing_file_is_deleted(self, _path_to_temporary_sqlite_db_file):
-        _path_to_temporary_sqlite_db_file.write_text("")
+    def test_existing_file_is_deleted(self, temporary_munro_sqlite_db_file_path):
+        temporary_munro_sqlite_db_file_path.write_text("")
 
-        _delete_existing(_path_to_temporary_sqlite_db_file)
+        _delete_existing(temporary_munro_sqlite_db_file_path)
 
-        assert not _path_to_temporary_sqlite_db_file.exists()
+        assert not temporary_munro_sqlite_db_file_path.exists()
 
 
 class TestCreateTable:
@@ -233,14 +219,18 @@ class TestInitialize:
         mock_populate,
         _connection,
         _mapped_rows,
-        _path_to_temporary_sqlite_db_file,
+        temporary_munro_sqlite_db_file_path,
     ):
         mock_sqlite3_connect.return_value = _connection
 
-        initialize(_mapped_rows, _path_to_temporary_sqlite_db_file)
+        initialize(_mapped_rows, temporary_munro_sqlite_db_file_path)
 
-        mock_delete_existing.assert_called_once_with(_path_to_temporary_sqlite_db_file)
-        mock_sqlite3_connect.assert_called_once_with(_path_to_temporary_sqlite_db_file)
+        mock_delete_existing.assert_called_once_with(
+            temporary_munro_sqlite_db_file_path,
+        )
+        mock_sqlite3_connect.assert_called_once_with(
+            temporary_munro_sqlite_db_file_path,
+        )
         mock_create_table.assert_called_once_with(_connection)
         mock_populate.assert_called_once_with(_connection, _mapped_rows)
 
@@ -252,9 +242,9 @@ class TestInitialize:
         mock_populate,
         _connection,
         _mapped_rows,
-        _path_to_temporary_sqlite_db_file,
+        temporary_munro_sqlite_db_file_path,
     ):
-        result = initialize(_mapped_rows, _path_to_temporary_sqlite_db_file)
+        result = initialize(_mapped_rows, temporary_munro_sqlite_db_file_path)
 
         assert result is mock_populate.return_value
 
@@ -266,9 +256,9 @@ class TestInitialize:
         mock_populate,
         _connection,
         _mapped_rows,
-        _path_to_temporary_sqlite_db_file,
+        temporary_munro_sqlite_db_file_path,
     ):
-        initialize(_mapped_rows, _path_to_temporary_sqlite_db_file)
+        initialize(_mapped_rows, temporary_munro_sqlite_db_file_path)
 
         with pytest.raises(sqlite3.ProgrammingError):
             _connection.execute("SELECT 1")

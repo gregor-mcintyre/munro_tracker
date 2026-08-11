@@ -5,6 +5,7 @@ from munro_db_builder.csv.row_type import CSVRow
 
 MUNRO_DB_BUILDER_PACKAGE_PATH = "munro_db_builder"
 
+# Realistic content in the DoBIH Munros and Tops CSV file
 REALISTIC_DOBIH_CSV_FILE_CONTENT: str = (
     'Running No,DoBIH Number,Name,Height (m),"Height\n(ft)",1891,1921,2021,Comments\n'
     "1,1,Ben Chonzie,931,3054,MUN,MUN,MUN,\n"  # First hill row
@@ -18,8 +19,8 @@ REALISTIC_DOBIH_CSV_FILE_CONTENT: str = (
     ",,,,,,,,\n"  # Empty row
 )
 
-# What `load_munros_and_tops_from_dobih_csv` is expected to return after it loads
-# `REALISTIC_DOBIH_CSV_FILE_CONTENT` from the temporary CSV file
+# Realistic rows from the DoBIH Munros and Tops CSV file.
+# Mapped to `REALISTIC_DOBIH_CSV_FILE_CONTENT`.
 REALISTIC_DOBIH_CSV_ROWS: list[CSVRow] = [
     {
         "Running No": "1",
@@ -100,8 +101,8 @@ REALISTIC_DOBIH_CSV_ROWS: list[CSVRow] = [
     },
 ]
 
-# What `map_to_internal_schema_and_add_classification` is expected to return for each
-# row in `REALISTIC_DOBIH_CSV_ROWS`
+# Realistic rows mapped to the internal schema. Includes non-hill and non-munro rows.
+# Mapped to `REALISTIC_DOBIH_CSV_ROWS`.
 REALISTIC_MAPPED_ROWS: list[MappedRow] = [
     {
         "id": 1,
@@ -145,4 +146,21 @@ REALISTIC_MAPPED_ROWS: list[MappedRow] = [
         "height_ft": None,
         "classification": "",
     },
+]
+
+# Realistic rows mapped to the internal schema that are classified as Munros based on
+# the latest survey-year.
+# Extracted from `REALISTIC_MAPPED_ROWS`.
+REALISTIC_MAPPED_MUNRO_ROWS: list[MappedRow] = [
+    REALISTIC_MAPPED_ROWS[index] for index in (0, 2, 3)
+]
+
+type MunroSQLiteDBRow = list[dict[str, int | str]]
+
+# Expected rows in the `munro` table of the SQLite database for Munros.
+# Mapped to `REALISTIC_MAPPED_MUNRO_ROWS`.
+EXPECTED_MUNRO_SQLITE_DB_ROWS: MunroSQLiteDBRow = [
+    {"id": 1, "name": "Ben Chonzie", "height_ft": 3054},
+    {"id": 1301, "name": "Ben More", "height_ft": 3169},
+    {"id": 2925, "name": "Beinn a' Chroin", "height_ft": 3089},
 ]
