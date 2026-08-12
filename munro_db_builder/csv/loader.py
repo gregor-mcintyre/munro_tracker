@@ -5,13 +5,9 @@ from pathlib import Path
 
 from munro_db_builder.csv.normalizers import normalize_column_names
 from munro_db_builder.csv.row_type import CSVRow
-import paths
 
 
-def load_munros_and_tops_from_dobih_csv(
-    *,
-    path: Path = paths.DOBIH_MUNROS_CSV_FILE,
-) -> list[CSVRow]:
+def load_munros_and_tops_from_dobih_csv(path: Path) -> list[CSVRow]:
     r"""Loads Munros and Tops from a CSV file.
 
     Opens the file with the `cp1252` encoding since it appears this is what DoBIH have
@@ -21,7 +17,7 @@ def load_munros_and_tops_from_dobih_csv(
     Normalizes column names where necessary.
 
     Args:
-        path: The path to the CSV file to read.
+        path: The path to the CSV file to be loaded.
 
     Returns:
         The Munros and Tops loaded from the CSV file.

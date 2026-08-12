@@ -17,6 +17,8 @@ class TestRunPipeline:
         mock_find_latest_year_column,
         mock_map_and_filter_to_munros,
         mock_initialize,
+        temporary_dobih_csv_file_path,
+        temporary_munro_sqlite_db_file_path,
     ):
         munros_and_tops_csv_rows = [
             {
@@ -29,9 +31,12 @@ class TestRunPipeline:
         ]
         mock_load_munros_and_tops.return_value = munros_and_tops_csv_rows
 
-        run_pipeline()
+        run_pipeline(
+            csv_path=temporary_dobih_csv_file_path,
+            db_path=temporary_munro_sqlite_db_file_path,
+        )
 
-        mock_load_munros_and_tops.assert_called_once_with()
+        mock_load_munros_and_tops.assert_called_once_with(temporary_dobih_csv_file_path)
         mock_find_latest_year_column.assert_called_once_with(
             {"DoBIH Number", "Name", "Height (ft)", "1", "2"}
         )
@@ -40,7 +45,8 @@ class TestRunPipeline:
             latest_year_column=mock_find_latest_year_column.return_value,
         )
         mock_initialize.assert_called_once_with(
-            mock_map_and_filter_to_munros.return_value,
+            path=temporary_munro_sqlite_db_file_path,
+            mapped_rows=mock_map_and_filter_to_munros.return_value,
         )
 
     def test_returns_number_of_rows_written_from_initialize(
@@ -49,7 +55,12 @@ class TestRunPipeline:
         mock_find_latest_year_column,
         mock_map_and_filter_to_munros,
         mock_initialize,
+        temporary_dobih_csv_file_path,
+        temporary_munro_sqlite_db_file_path,
     ):
-        result = run_pipeline()
+        result = run_pipeline(
+            csv_path=temporary_dobih_csv_file_path,
+            db_path=temporary_munro_sqlite_db_file_path,
+        )
 
         assert result is mock_initialize.return_value

@@ -185,7 +185,7 @@ class TestPopulate:
         _create_munro_table,
         _mapped_rows,
     ):
-        _populate(_connection, _mapped_rows)
+        _populate(connection=_connection, mapped_rows=_mapped_rows)
 
         _connection.row_factory = sqlite3.Row
         query_result = _connection.execute("SELECT * FROM munro").fetchall()
@@ -199,7 +199,7 @@ class TestPopulate:
         _create_munro_table,
         _mapped_rows,
     ):
-        result = _populate(_connection, _mapped_rows)
+        result = _populate(connection=_connection, mapped_rows=_mapped_rows)
 
         assert result == len(_mapped_rows)
 
@@ -223,7 +223,7 @@ class TestInitialize:
     ):
         mock_sqlite3_connect.return_value = _connection
 
-        initialize(_mapped_rows, temporary_munro_sqlite_db_file_path)
+        initialize(path=temporary_munro_sqlite_db_file_path, mapped_rows=_mapped_rows)
 
         mock_delete_existing.assert_called_once_with(
             temporary_munro_sqlite_db_file_path,
@@ -232,7 +232,10 @@ class TestInitialize:
             temporary_munro_sqlite_db_file_path,
         )
         mock_create_table.assert_called_once_with(_connection)
-        mock_populate.assert_called_once_with(_connection, _mapped_rows)
+        mock_populate.assert_called_once_with(
+            connection=_connection,
+            mapped_rows=_mapped_rows,
+        )
 
     def test_returns_number_of_rows_written_from_populate(
         self,
@@ -244,7 +247,10 @@ class TestInitialize:
         _mapped_rows,
         temporary_munro_sqlite_db_file_path,
     ):
-        result = initialize(_mapped_rows, temporary_munro_sqlite_db_file_path)
+        result = initialize(
+            path=temporary_munro_sqlite_db_file_path,
+            mapped_rows=_mapped_rows,
+        )
 
         assert result is mock_populate.return_value
 
@@ -258,7 +264,7 @@ class TestInitialize:
         _mapped_rows,
         temporary_munro_sqlite_db_file_path,
     ):
-        initialize(_mapped_rows, temporary_munro_sqlite_db_file_path)
+        initialize(path=temporary_munro_sqlite_db_file_path, mapped_rows=_mapped_rows)
 
         with pytest.raises(sqlite3.ProgrammingError):
             _connection.execute("SELECT 1")

@@ -22,7 +22,7 @@ def _write_to_file_using_cp1252(path: Path, content: str) -> None:
 class TestLoadMunrosAndTopsFromDoBIHCSV:
     def test_missing_file_raises_file_not_found_error(self, tmp_path):
         with pytest.raises(FileNotFoundError):
-            load_munros_and_tops_from_dobih_csv(path=tmp_path / "does_not_exist")
+            load_munros_and_tops_from_dobih_csv(tmp_path / "does_not_exist")
 
     @patch(MUNRO_DB_BUILDER_PACKAGE_PATH + ".csv.loader.normalize_column_names")
     def test_normalize_column_names_is_called_with_correct_column_names(
@@ -35,7 +35,7 @@ class TestLoadMunrosAndTopsFromDoBIHCSV:
             "name,height\nmunro_1,1",
         )
 
-        load_munros_and_tops_from_dobih_csv(path=temporary_dobih_csv_file_path)
+        load_munros_and_tops_from_dobih_csv(temporary_dobih_csv_file_path)
 
         mock_normalize_column_names.assert_called_once_with(["name", "height"])
 
@@ -45,7 +45,7 @@ class TestLoadMunrosAndTopsFromDoBIHCSV:
     ):
         _write_to_file_using_cp1252(temporary_dobih_csv_file_path, "name,height\n’,1")
 
-        result = load_munros_and_tops_from_dobih_csv(path=temporary_dobih_csv_file_path)
+        result = load_munros_and_tops_from_dobih_csv(temporary_dobih_csv_file_path)
 
         assert result[0]["name"] == "’"
 
@@ -55,7 +55,7 @@ class TestLoadMunrosAndTopsFromDoBIHCSV:
             "name,height\nmunro_1,1\ntop_1,2",
         )
 
-        result = load_munros_and_tops_from_dobih_csv(path=temporary_dobih_csv_file_path)
+        result = load_munros_and_tops_from_dobih_csv(temporary_dobih_csv_file_path)
 
         expected = [
             {"name": "munro_1", "height": "1"},

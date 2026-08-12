@@ -10,13 +10,17 @@ The pipeline for building the database consists of the following steps:
 import logging
 
 from munro_db_builder import orchestrator
+import paths
 
 
 def main() -> None:
     """Runs `orchestrator.run_pipeline` and logs."""
     logging.basicConfig(level=logging.INFO)
 
-    rows_written = orchestrator.run_pipeline()
+    rows_written = orchestrator.run_pipeline(
+        csv_path=paths.DOBIH_MUNROS_CSV_FILE,
+        db_path=paths.MUNRO_SQLITE_DB,
+    )
 
     logging.info("Wrote %d Munros to the SQLite database.", rows_written)
 

@@ -10,7 +10,6 @@ from pathlib import Path
 import sqlite3
 
 from munro_db_builder._mapper import MappedRow
-import paths
 
 
 def _delete_existing(path: Path) -> None:
@@ -38,7 +37,11 @@ def _create_table(connection: sqlite3.Connection) -> None:
         """)
 
 
-def _populate(connection: sqlite3.Connection, mapped_rows: Iterable[MappedRow]) -> int:
+def _populate(
+    *,
+    connection: sqlite3.Connection,
+    mapped_rows: Iterable[MappedRow],
+) -> int:
     """Populates the `munro` table with Munros filtered from the CSV file.
 
     All rows are inserted in bulk as a single transaction.
@@ -61,10 +64,7 @@ def _populate(connection: sqlite3.Connection, mapped_rows: Iterable[MappedRow]) 
     return cursor.rowcount
 
 
-def initialize(
-    mapped_rows: Iterable[MappedRow],
-    path: Path = paths.MUNRO_SQLITE_DB,
-) -> int:
+def initialize(*, path: Path, mapped_rows: Iterable[MappedRow]) -> int:
     """Initializes a new SQLite database file for Munros.
 
     Executes the following steps:
@@ -76,8 +76,8 @@ def initialize(
         5. Commits the transaction and closes the connection.
 
     Args:
-        mapped_rows: Rows mapped to the internal schema.
         path: The path to where the SQLite database file should be initialized.
+        mapped_rows: Rows mapped to the internal schema.
 
     Returns:
         The number of rows written to the database.
@@ -87,4 +87,4 @@ def initialize(
     with closing(sqlite3.connect(path)) as connection, connection:
         _create_table(connection)
 
-        return _populate(connection, mapped_rows)
+        return _populate(connection=connection, mapped_rows=mapped_rows)

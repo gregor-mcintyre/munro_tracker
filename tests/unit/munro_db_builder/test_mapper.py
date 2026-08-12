@@ -14,13 +14,13 @@ class TestNormalizeFieldValue:
     _RAW_VALUE = "test"
 
     def test_name_field_returns_raw_value_unchanged(self):
-        result = _normalize_field_value("name", self._RAW_VALUE)
+        result = _normalize_field_value(field_name="name", raw_value=self._RAW_VALUE)
 
         assert result is self._RAW_VALUE
 
     @patch(_MODULE_PATH + ".normalize_int")
     def test_other_field_returns_normalize_int_result(self, mock_normalize_int):
-        result = _normalize_field_value("other", self._RAW_VALUE)
+        result = _normalize_field_value(field_name="other", raw_value=self._RAW_VALUE)
 
         mock_normalize_int.assert_called_once_with(self._RAW_VALUE)
 

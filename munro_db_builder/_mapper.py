@@ -19,7 +19,7 @@ _CSV_COLUMN_TO_INTERNAL_SCHEMA_MAP: dict[str, str] = {
 }
 
 
-def _normalize_field_value(field_name: str, raw_value: str) -> _NormalizedValue:
+def _normalize_field_value(*, field_name: str, raw_value: str) -> _NormalizedValue:
     """Normalizes a value based on a field mapped to the internal schema.
 
     Values for the `name` field are unchanged, but values for every other field are

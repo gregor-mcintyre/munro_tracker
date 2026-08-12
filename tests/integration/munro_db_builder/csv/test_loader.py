@@ -16,7 +16,7 @@ class TestCSVLoadingAndNormalizing:
         self,
         temporary_dobih_csv_file_path,
     ):
-        result = load_munros_and_tops_from_dobih_csv(path=temporary_dobih_csv_file_path)
+        result = load_munros_and_tops_from_dobih_csv(temporary_dobih_csv_file_path)
 
         first_row = result[0]
 
@@ -26,7 +26,7 @@ class TestCSVLoadingAndNormalizing:
         self,
         temporary_dobih_csv_file_path,
     ):
-        result = load_munros_and_tops_from_dobih_csv(path=temporary_dobih_csv_file_path)
+        result = load_munros_and_tops_from_dobih_csv(temporary_dobih_csv_file_path)
 
         assert result[4]["Comments"] == (
             "on the O.S. name Stùc Gharbh Mhòr, corresponds to the 3625' spot"
@@ -36,6 +36,6 @@ class TestCSVLoadingAndNormalizing:
         self,
         temporary_dobih_csv_file_path,
     ):
-        result = load_munros_and_tops_from_dobih_csv(path=temporary_dobih_csv_file_path)
+        result = load_munros_and_tops_from_dobih_csv(temporary_dobih_csv_file_path)
 
         assert result == REALISTIC_DOBIH_CSV_ROWS
