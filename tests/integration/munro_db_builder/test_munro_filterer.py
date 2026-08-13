@@ -6,7 +6,10 @@ and `_is_munro` collaboration with realistic CSV rows.
 
 from munro_db_builder._latest_year_finder import find_latest_year_column
 from munro_db_builder._munro_filterer import map_and_filter_to_munros
-from tests.helpers import REALISTIC_DOBIH_CSV_ROWS, REALISTIC_MAPPED_MUNRO_ROWS
+from tests.csv_to_sqlite_test_data import (
+    REALISTIC_DOBIH_CSV_ROWS,
+    REALISTIC_MAPPED_MUNRO_ROWS,
+)
 
 _REALISTIC_CSV_COLUMN_NAMES = REALISTIC_DOBIH_CSV_ROWS[0].keys()
 _LATEST_YEAR_COLUMN = find_latest_year_column(_REALISTIC_CSV_COLUMN_NAMES)

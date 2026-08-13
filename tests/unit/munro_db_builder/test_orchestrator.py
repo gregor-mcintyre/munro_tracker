@@ -1,9 +1,9 @@
 from unittest.mock import patch
 
 from munro_db_builder.orchestrator import run_pipeline
-from tests.helpers import MUNRO_DB_BUILDER_PACKAGE_PATH
+from tests import paths
 
-_MODULE_PATH = MUNRO_DB_BUILDER_PACKAGE_PATH + ".orchestrator"
+_MODULE_PATH = paths.MUNRO_DB_BUILDER_PACKAGE + ".orchestrator"
 
 
 @patch(_MODULE_PATH + ".initialize")

@@ -4,7 +4,7 @@ from unittest.mock import patch
 import pytest
 
 from munro_db_builder.csv.loader import load_munros_and_tops_from_dobih_csv
-from tests.helpers import MUNRO_DB_BUILDER_PACKAGE_PATH
+from tests import paths
 
 
 def _write_to_file_using_cp1252(path: Path, content: str) -> None:
@@ -24,7 +24,7 @@ class TestLoadMunrosAndTopsFromDoBIHCSV:
         with pytest.raises(FileNotFoundError):
             load_munros_and_tops_from_dobih_csv(tmp_path / "does_not_exist")
 
-    @patch(MUNRO_DB_BUILDER_PACKAGE_PATH + ".csv.loader.normalize_column_names")
+    @patch(paths.MUNRO_DB_BUILDER_PACKAGE + ".csv.loader.normalize_column_names")
     def test_normalize_column_names_is_called_with_correct_column_names(
         self,
         mock_normalize_column_names,

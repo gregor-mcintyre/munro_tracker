@@ -12,9 +12,9 @@ from munro_db_builder._sqlite_initializer import (
     _populate,
     initialize,
 )
-from tests.helpers import MUNRO_DB_BUILDER_PACKAGE_PATH
+from tests import paths
 
-_MODULE_PATH = MUNRO_DB_BUILDER_PACKAGE_PATH + "._sqlite_initializer"
+_MODULE_PATH = paths.MUNRO_DB_BUILDER_PACKAGE + "._sqlite_initializer"
 
 type _FixtureScope = Literal["session", "package", "module", "class", "function"]
 

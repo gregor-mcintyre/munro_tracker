@@ -7,7 +7,7 @@ real CSV file.
 import pytest
 
 from munro_db_builder.csv.loader import load_munros_and_tops_from_dobih_csv
-from tests.helpers import REALISTIC_DOBIH_CSV_ROWS
+from tests.csv_to_sqlite_test_data import REALISTIC_DOBIH_CSV_ROWS
 
 
 @pytest.mark.usefixtures("write_realistic_content_to_temporary_dobih_csv_file")

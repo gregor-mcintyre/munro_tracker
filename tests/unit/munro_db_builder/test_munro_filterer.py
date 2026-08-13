@@ -6,9 +6,9 @@ from munro_db_builder._munro_filterer import (
     _is_munro,
     map_and_filter_to_munros,
 )
-from tests.helpers import MUNRO_DB_BUILDER_PACKAGE_PATH
+from tests import paths
 
-_MODULE_PATH = MUNRO_DB_BUILDER_PACKAGE_PATH + "._munro_filterer"
+_MODULE_PATH = paths.MUNRO_DB_BUILDER_PACKAGE + "._munro_filterer"
 
 
 class TestIsMunro:

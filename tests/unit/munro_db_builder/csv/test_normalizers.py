@@ -5,7 +5,7 @@ from munro_db_builder.csv.normalizers import (
     normalize_column_names,
     normalize_int,
 )
-from tests.helpers import MUNRO_DB_BUILDER_PACKAGE_PATH
+from tests import paths
 
 
 class TestNormalizeHeightFt:
@@ -18,7 +18,7 @@ class TestNormalizeHeightFt:
         assert _normalize_height_ft(column_name) is column_name
 
 
-@patch(MUNRO_DB_BUILDER_PACKAGE_PATH + ".csv.normalizers._normalize_height_ft")
+@patch(paths.MUNRO_DB_BUILDER_PACKAGE + ".csv.normalizers._normalize_height_ft")
 class TestNormalizeColumnNames:
     def test_normalize_height_ft_called_for_every_column(
         self,

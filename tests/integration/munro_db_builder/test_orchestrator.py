@@ -8,7 +8,9 @@ database and CSV files.
 import pytest
 
 from munro_db_builder.orchestrator import run_pipeline
-from tests.helpers import assert_munros_persisted_to_sqlite_database
+from tests.integration._sqlite_assertion import (
+    assert_munros_persisted_to_sqlite_database,
+)
 
 
 class TestRunPipeline:

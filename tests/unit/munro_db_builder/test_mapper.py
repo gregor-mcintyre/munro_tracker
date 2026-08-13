@@ -5,9 +5,9 @@ from munro_db_builder._mapper import (
     _normalize_field_value,
     map_to_internal_schema_and_add_classification,
 )
-from tests.helpers import MUNRO_DB_BUILDER_PACKAGE_PATH
+from tests import paths
 
-_MODULE_PATH = MUNRO_DB_BUILDER_PACKAGE_PATH + "._mapper"
+_MODULE_PATH = paths.MUNRO_DB_BUILDER_PACKAGE + "._mapper"
 
 
 class TestNormalizeFieldValue:

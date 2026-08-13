@@ -1,4 +1,4 @@
-"""Fixtures shared across the test suite."""
+"""`pytest` fixtures shared across the test suite."""
 
 from collections.abc import Callable
 from pathlib import Path
@@ -7,7 +7,7 @@ from typing import cast
 import pytest
 
 import paths
-from tests.helpers import REALISTIC_DOBIH_CSV_FILE_CONTENT
+from tests.csv_to_sqlite_test_data import REALISTIC_DOBIH_CSV_FILE_CONTENT
 
 
 def _create_temporary_path_fixture(
