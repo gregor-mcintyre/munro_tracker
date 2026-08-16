@@ -253,7 +253,7 @@ git flow feature publish <feature-name>
 git flow feature pull origin <feature-name>
 
 # Commit and push as you go
-git commit -am "Add feature description"
+git commit -m "Add feature description"
 git push
 
 # Finish the feature (merges into develop and deletes the feature branch)
@@ -274,7 +274,7 @@ git flow release start <0.1.2>
 git flow release publish <0.1.2>
 
 # Make any last-minute release fixes directly on the release branch
-git commit -am "Final fixes for release v0.1.2"
+git commit -m "Final fixes for release v0.1.2"
 git push
 
 # Finish the release (merges into main and develop, and tags the release)
@@ -304,7 +304,7 @@ git flow hotfix publish <hotfix-name>
 git pull origin hotfix/<hotfix-name>
 
 # Commit and push as you go
-git commit -am "Fix critical issue"
+git commit -m "Fix critical issue"
 git push
 
 # Finish the hotfix (merges into main and develop, and tags the release)
