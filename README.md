@@ -13,6 +13,8 @@ writes them to a SQLite database.
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Usage](#usage)
+- [Testing](#testing)
+    - [Test Coverage](#test-coverage)
 - [Project Structure](#project-structure)
 - [Notes on DoBIH](#notes-on-dobih)
     - [IDs](#ids)
@@ -68,6 +70,44 @@ python build_munro_db.py
 
 This creates a SQLite database named `munro.db` containing a single table, `munro`, with
 the columns `id`, `name`, and `height_ft`.
+
+---
+
+## Testing
+
+To run all tests:
+
+```bash
+pytest
+```
+
+Tests are separated into three categories:
+
+- **Unit** - Test individual units of code in isolation. External
+  collaborators/dependencies are mocked.
+  ```bash
+  pytest tests/unit
+  ```
+- **Integration** - Test interactions between multiple components. Real implementations
+  are used.
+  ```bash
+  pytest tests/integration
+  ```
+- **End-to-end** - Test the whole system from start to finish, from a user's
+  perspective. Real application components and external integrations are used where
+  appropriate.
+  ```bash
+  pytest tests/e2e
+  ```
+
+### Test Coverage
+
+Coverage is measured by the `pytest-cov` plugin and configured under `[tool.coverage.*]`
+in `pyproject.toml`.
+
+```bash
+pytest --cov
+```
 
 ---
 
@@ -202,7 +242,7 @@ Version tag prefix: []
 
 Use for new features.
 
-```bash
+```
 # Create a new feature
 git flow feature start <feature-name>
 
@@ -226,7 +266,7 @@ git push
 Use when preparing a new version for deployment. A release branch can bundle one or more
 completed features.
 
-```bash
+```
 # Create a new release
 git flow release start <0.1.2>
 
@@ -253,7 +293,7 @@ git push --tags
 
 Use for urgent production fixes.
 
-```bash
+```
 # Create a hotfix from main
 git flow hotfix start <hotfix-name>
 

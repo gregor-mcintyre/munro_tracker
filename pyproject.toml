@@ -6,9 +6,11 @@ requires-python = ">=3.14"
 
 [project.optional-dependencies]
 dev = [
-    "ruff==0.15.22",
     "mypy==1.20.0",
     "pre-commit==4.0.1",
+    "pytest==9.1.1",
+    "pytest-cov==7.1.0",
+    "ruff==0.15.22",
     "vulture==2.13",
 ]
 
@@ -22,6 +24,31 @@ namespaces = false
 exclude = [
     "data*",
     "tests*",
+]
+
+# mypy — static type checking (enforces type hints)
+[tool.mypy]
+python_version = "3.14"
+warn_return_any = true
+warn_unused_ignores = true
+show_error_codes = true
+check_untyped_defs = true
+
+# Test coverage - scoped only to unit & integration
+[tool.coverage.run]
+source = ["."]
+branch = true
+omit = [
+    "tests/*",
+    ".venv/*",
+    "*.egg-info/*",
+]
+
+[tool.coverage.report]
+show_missing = true
+exclude_lines = [
+    "pragma: no cover",
+    "if __name__ == .__main__.:",
 ]
 
 [tool.ruff]
@@ -64,11 +91,3 @@ combine-as-imports = true
 
 [tool.ruff.format]
 quote-style = "double"
-
-# mypy — static type checking (enforces type hints)
-[tool.mypy]
-python_version = "3.14"
-warn_return_any = true
-warn_unused_ignores = true
-show_error_codes = true
-check_untyped_defs = true
