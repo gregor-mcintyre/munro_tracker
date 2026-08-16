@@ -31,13 +31,13 @@ def _create_connection_fixture(
         `_connection` decorated as a fixture scoped to `scope`.
     """
 
-    @pytest.fixture(scope=scope)
-    def _connection(self) -> Iterator[sqlite3.Connection]:
+    @pytest.fixture(scope=scope)  # type: ignore[misc]
+    @classmethod
+    def _connection(_cls) -> Iterator[sqlite3.Connection]:
         """Provides an open in-memory SQLite connection.
 
         Args:
-            self: The test class instance. Unused, but required for
-                binding as a class attribute.
+            _cls: The test class. Unused, but required for binding as a class attribute.
 
         Yields:
             An open connection to an in-memory SQLite database.
@@ -79,8 +79,9 @@ class TestCreateTable:
     _connection = _create_connection_fixture()
 
     @pytest.fixture(scope="class")
+    @classmethod
     def _run_create_table_and_get_column_metadata(
-        self,
+        cls,
         _connection,
     ) -> list[tuple[str, str, bool, bool]]:
         """Runs `_create_table` and gets column metadata for the `munro` table.
@@ -96,6 +97,8 @@ class TestCreateTable:
                 - `True` if there is a NOT NULL constraint, otherwise `False`.
                 - `True` if the column is part of the PRIMARY KEY, otherwise `False`.
         """
+        del cls
+
         _create_table(_connection)
 
         return [
