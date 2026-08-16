@@ -1,6 +1,6 @@
 [project]
 name = "munro_tracker"
-version = "0.0.0"
+version = "0.1.0"
 description = "Builds a SQLite database of Munros based on a DoBIH CSV file."
 requires-python = ">=3.14"
 
