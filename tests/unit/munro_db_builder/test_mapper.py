@@ -35,7 +35,7 @@ class TestMapToInternalSchema:
         _map_to_internal_schema(self._CSV_ROW)
 
         assert mock_normalize_field_value.call_args_list == [
-            call(field_name="id", raw_value="1"),
+            call(field_name="dobih_number", raw_value="1"),
             call(field_name="name", raw_value="2"),
             call(field_name="height_ft", raw_value="3"),
         ]
@@ -45,7 +45,7 @@ class TestMapToInternalSchema:
 
         result = _map_to_internal_schema(csv_row)
 
-        assert result.keys() == {"id", "name", "height_ft"}
+        assert result.keys() == {"dobih_number", "name", "height_ft"}
 
     def test_returns_csv_row_mapped_to_internal_schema(
         self,
@@ -55,7 +55,7 @@ class TestMapToInternalSchema:
 
         result = _map_to_internal_schema(self._CSV_ROW)
 
-        assert result == {"id": 1, "name": "2", "height_ft": 3}
+        assert result == {"dobih_number": 1, "name": "2", "height_ft": 3}
 
 
 @patch(_MODULE_PATH + "._map_to_internal_schema")
@@ -78,7 +78,7 @@ class TestMapToInternalSchemaAndAddClassification:
         mock_map_to_internal_schema,
     ):
         mock_map_to_internal_schema.return_value = {
-            "id": 1,
+            "dobih_number": 1,
             "name": "2",
             "height_ft": 3,
         }
@@ -89,7 +89,7 @@ class TestMapToInternalSchemaAndAddClassification:
         )
 
         assert result == {
-            "id": 1,
+            "dobih_number": 1,
             "name": "2",
             "height_ft": 3,
             "classification": "MUN",

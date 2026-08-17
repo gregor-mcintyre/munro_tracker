@@ -13,7 +13,7 @@ type MappedRow = dict[str, _NormalizedValue]
 # Mapping of normalized CSV column names to internal schema.
 # ADJUST KEYS if a future release of the CSV file renames them
 _CSV_COLUMN_TO_INTERNAL_SCHEMA_MAP: dict[str, str] = {
-    "DoBIH Number": "id",  # Assumed stable identifier across future releases
+    "DoBIH Number": "dobih_number",  # Assumed stable identifier across future releases
     "Name": "name",
     "Height (ft)": "height_ft",
 }

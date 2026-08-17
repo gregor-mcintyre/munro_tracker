@@ -103,43 +103,43 @@ REALISTIC_DOBIH_CSV_ROWS: list[CSVRow] = [
 # Mapped to `REALISTIC_DOBIH_CSV_ROWS`.
 REALISTIC_MAPPED_ROWS: list[MappedRow] = [
     {
-        "id": 1,
+        "dobih_number": 1,
         "name": "Ben Chonzie",
         "height_ft": 3054,
         "classification": "MUN",
     },
     {
-        "id": 36,
+        "dobih_number": 36,
         "name": "Beinn a' Chroin East Top",
         "height_ft": 3084,
         "classification": "TOP",
     },
     {
-        "id": 2925,
+        "dobih_number": 2925,
         "name": "Beinn a' Chroin",
         "height_ft": 3089,
         "classification": "MUN",
     },
     {
-        "id": 1301,
+        "dobih_number": 1301,
         "name": "Ben More",
         "height_ft": 3169,
         "classification": "MUN",
     },
     {
-        "id": 550,
+        "dobih_number": 550,
         "name": "Leabaidh an Daimh Bhuidhe (Ben Avon) - Stuc Gharbh Mhor (old GR)",
         "height_ft": 3648,
         "classification": "",
     },
     {
-        "id": None,
+        "dobih_number": None,
         "name": "",
         "height_ft": None,
         "classification": "282",
     },
     {
-        "id": None,
+        "dobih_number": None,
         "name": "",
         "height_ft": None,
         "classification": "",
@@ -158,7 +158,7 @@ type MunroSQLiteDBRows = list[dict[str, int | str]]
 # Expected rows in the `munro` table of the SQLite database for Munros.
 # Mapped to `REALISTIC_MAPPED_MUNRO_ROWS`.
 EXPECTED_MUNRO_SQLITE_DB_ROWS: MunroSQLiteDBRows = [
-    {"id": 1, "name": "Ben Chonzie", "height_ft": 3054},
-    {"id": 1301, "name": "Ben More", "height_ft": 3169},
-    {"id": 2925, "name": "Beinn a' Chroin", "height_ft": 3089},
+    {"dobih_number": 1, "name": "Ben Chonzie", "height_ft": 3054},
+    {"dobih_number": 1301, "name": "Ben More", "height_ft": 3169},
+    {"dobih_number": 2925, "name": "Beinn a' Chroin", "height_ft": 3089},
 ]

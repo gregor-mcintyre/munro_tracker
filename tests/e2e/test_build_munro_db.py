@@ -20,10 +20,10 @@ def _assert_total_and_well_known_munros_in_sqlite_database() -> None:
         munros_total = connection.execute("SELECT COUNT(*) FROM munro").fetchone()[0]
 
         ben_nevis = connection.execute(
-            "SELECT name, height_ft FROM munro WHERE id = ?", (278,)
+            "SELECT name, height_ft FROM munro WHERE dobih_number = ?", (278,)
         ).fetchone()
         ben_lomond = connection.execute(
-            "SELECT name, height_ft FROM munro WHERE id = ?", (32,)
+            "SELECT name, height_ft FROM munro WHERE dobih_number = ?", (32,)
         ).fetchone()
 
     assert munros_total == 282

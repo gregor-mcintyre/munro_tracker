@@ -30,7 +30,7 @@ def _create_table(connection: sqlite3.Connection) -> None:
     """
     connection.execute("""
         CREATE TABLE munro (
-            id INTEGER PRIMARY KEY,
+            dobih_number INTEGER PRIMARY KEY,
             name TEXT NOT NULL,
             height_ft INTEGER NOT NULL
         )
@@ -55,10 +55,10 @@ def _populate(
     """
     cursor = connection.executemany(
         """
-        INSERT INTO munro (id, name, height_ft)
+        INSERT INTO munro (dobih_number, name, height_ft)
         VALUES (?, ?, ?)
         """,
-        ((row["id"], row["name"], row["height_ft"]) for row in mapped_rows),
+        ((row["dobih_number"], row["name"], row["height_ft"]) for row in mapped_rows),
     )
 
     return cursor.rowcount

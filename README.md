@@ -69,7 +69,7 @@ python build_munro_db.py
 ```
 
 This creates a SQLite database named `munro.db` containing a single table, `munro`, with
-the columns `id`, `name`, and `height_ft`.
+the columns `dobih_number`, `name`, and `height_ft`.
 
 ---
 

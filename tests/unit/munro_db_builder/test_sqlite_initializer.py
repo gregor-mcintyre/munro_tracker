@@ -56,8 +56,8 @@ def _create_connection_fixture(
 def _mapped_rows() -> list[MappedRow]:
     """Sample rows mapped to the internal schema."""
     return [
-        {"id": 1, "name": "Munro 1", "height_ft": 3},
-        {"id": 2, "name": "Munro 2", "height_ft": 4},
+        {"dobih_number": 1, "name": "Munro 1", "height_ft": 3},
+        {"dobih_number": 2, "name": "Munro 2", "height_ft": 4},
     ]
 
 
@@ -125,7 +125,7 @@ class TestCreateTable:
         metadata = _run_create_table_and_get_column_metadata
         column_names = [name for name, _, _, _ in metadata]
 
-        assert column_names == ["id", "name", "height_ft"]
+        assert column_names == ["dobih_number", "name", "height_ft"]
 
     def test_columns_are_expected_data_type(
         self,
@@ -135,12 +135,12 @@ class TestCreateTable:
         column_data_types = {name: data_type for name, data_type, _, _ in metadata}
 
         assert column_data_types == {
-            "id": "INTEGER",
+            "dobih_number": "INTEGER",
             "name": "TEXT",
             "height_ft": "INTEGER",
         }
 
-    def test_id_column_is_the_primary_key(
+    def test_dobih_number_column_is_the_primary_key(
         self,
         _run_create_table_and_get_column_metadata,
     ):
@@ -148,7 +148,11 @@ class TestCreateTable:
             name: pk for name, _, _, pk in _run_create_table_and_get_column_metadata
         }
 
-        assert name_to_pk_map == {"id": True, "name": False, "height_ft": False}
+        assert name_to_pk_map == {
+            "dobih_number": True,
+            "name": False,
+            "height_ft": False,
+        }
 
     def test_name_and_height_ft_columns_are_not_null(
         self,
@@ -176,7 +180,7 @@ class TestPopulate:
         """
         _connection.execute("""
             CREATE TABLE munro (
-                id INTEGER PRIMARY KEY,
+                dobih_number INTEGER PRIMARY KEY,
                 name TEXT NOT NULL,
                 height_ft INTEGER NOT NULL
             )

@@ -24,7 +24,7 @@ class TestIsMunro:
 
 @patch(_MODULE_PATH + "._is_munro")
 class TestFilterToMunros:
-    _MAPPED_ROWS: list[MappedRow] = [{"id": 1}, {"id": 2}]
+    _MAPPED_ROWS: list[MappedRow] = [{"dobih_number": 1}, {"dobih_number": 2}]
 
     def test_no_munros_returns_empty(self, mock_is_munro):
         mock_is_munro.return_value = False
@@ -38,7 +38,7 @@ class TestFilterToMunros:
 
         result = _filter_to_munros(self._MAPPED_ROWS)
 
-        assert list(result) == [{"id": 2}]
+        assert list(result) == [{"dobih_number": 2}]
 
     def test_all_munros_returns_all(self, mock_is_munro):
         mock_is_munro.return_value = True
