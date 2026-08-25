@@ -3,9 +3,15 @@ name = "munro_tracker"
 version = "0.1.0"
 description = "Builds a SQLite database of Munros based on a DoBIH CSV file."
 requires-python = ">=3.14"
+dependencies = [
+    "fastapi==0.141.1",
+    "sqlalchemy==2.0.52",
+    "uvicorn==0.52.4",
+]
 
 [project.optional-dependencies]
 dev = [
+    "httpx==0.28.1",
     "mypy==1.20.0",
     "pre-commit==4.0.1",
     "pytest==9.1.1",
@@ -84,6 +90,9 @@ convention = "google"
 [tool.ruff.lint.isort]
 force-sort-within-sections = true
 combine-as-imports = true
+
+[tool.ruff.lint.flake8-bugbear]
+extend-immutable-calls = ["fastapi.Depends", "fastapi.Query"]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**/test_*.py" = ["D100", "D101", "D102", "D103"]
