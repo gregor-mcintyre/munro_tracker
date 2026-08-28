@@ -4,11 +4,19 @@ from pathlib import Path
 import sqlite3
 from typing import cast
 
-from tests.csv_to_sqlite_test_data import (
-    EXPECTED_MUNRO_SQLITE_DB_ROWS,
+from tests.integration.munro_db_builder._csv_to_sqlite_test_data import (
     REALISTIC_MAPPED_MUNRO_ROWS,
-    MunroSQLiteDBRows,
 )
+
+type MunroSQLiteDBRows = list[dict[str, int | str]]
+
+# Expected rows in the `munro` table of the SQLite database for Munros.
+# Mapped to `REALISTIC_MAPPED_MUNRO_ROWS`.
+EXPECTED_MUNRO_SQLITE_DB_ROWS: MunroSQLiteDBRows = [
+    {"dobih_number": 1, "name": "Ben Chonzie", "height_ft": 3054},
+    {"dobih_number": 1301, "name": "Ben More", "height_ft": 3169},
+    {"dobih_number": 2925, "name": "Beinn a' Chroin", "height_ft": 3089},
+]
 
 
 def _read_munro_rows_from_sqlite_database(*, path: Path) -> MunroSQLiteDBRows:

@@ -152,13 +152,3 @@ REALISTIC_MAPPED_ROWS: list[MappedRow] = [
 REALISTIC_MAPPED_MUNRO_ROWS: list[MappedRow] = [
     REALISTIC_MAPPED_ROWS[index] for index in (0, 2, 3)
 ]
-
-type MunroSQLiteDBRows = list[dict[str, int | str]]
-
-# Expected rows in the `munro` table of the SQLite database for Munros.
-# Mapped to `REALISTIC_MAPPED_MUNRO_ROWS`.
-EXPECTED_MUNRO_SQLITE_DB_ROWS: MunroSQLiteDBRows = [
-    {"dobih_number": 1, "name": "Ben Chonzie", "height_ft": 3054},
-    {"dobih_number": 1301, "name": "Ben More", "height_ft": 3169},
-    {"dobih_number": 2925, "name": "Beinn a' Chroin", "height_ft": 3089},
-]

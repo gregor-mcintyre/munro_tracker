@@ -6,7 +6,7 @@ collaboration with realistic CSV rows.
 
 from munro_db_builder._latest_year_finder import find_latest_year_column
 from munro_db_builder._mapper import map_to_internal_schema_and_add_classification
-from tests.csv_to_sqlite_test_data import (
+from tests.integration.munro_db_builder._csv_to_sqlite_test_data import (
     REALISTIC_DOBIH_CSV_ROWS,
     REALISTIC_MAPPED_ROWS,
 )

@@ -7,8 +7,10 @@ temporary SQLite database file.
 from pathlib import Path
 
 from munro_db_builder._sqlite_initializer import initialize
-from tests.csv_to_sqlite_test_data import REALISTIC_MAPPED_MUNRO_ROWS
-from tests.integration._sqlite_assertion import (
+from tests.integration.munro_db_builder._csv_to_sqlite_test_data import (
+    REALISTIC_MAPPED_MUNRO_ROWS,
+)
+from tests.integration.munro_db_builder._sqlite_assertion import (
     assert_munros_persisted_to_sqlite_database,
 )
 
