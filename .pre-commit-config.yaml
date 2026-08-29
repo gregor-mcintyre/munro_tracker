@@ -12,7 +12,9 @@ repos:
     rev: v1.20.0
     hooks:
       - id: mypy
-        additional_dependencies: [ ]
+        additional_dependencies:
+          - sqlalchemy==2.0.52
+          - fastapi==0.141.1
 
   # vulture — flags unused/dead functions, classes, and variables.
   - repo: https://github.com/jendrikseipp/vulture
